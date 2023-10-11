@@ -1,0 +1,13 @@
+import nltk
+
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
+text = "Part-of-speech tagging is essential for natural language processing."
+
+words = nltk.word_tokenize(text)
+
+pos_tags = nltk.pos_tag(words)
+
+print("Original Text:", text)
+print("Part-of-Speech Tags:",pos_tags
