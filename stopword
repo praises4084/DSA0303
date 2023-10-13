@@ -1,0 +1,17 @@
+import nltk
+from nltk.corpus import stopwords
+
+
+
+text = "Bobby uchiha is the strongest fire style user."
+
+words = text.split()
+
+stop_words = set(stopwords.words('english'))
+
+filtered_words = [word for word in words if word.lower() not in stop_words]
+
+filtered_text = ' '.join(filtered_words)
+
+print("Original text:", text)
+print("Text after stopword removal:", filtered_text)
