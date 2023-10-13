@@ -1,0 +1,19 @@
+import nltk
+from nltk import sent_tokenize, word_tokenize, pos_tag, ne_chunk
+
+text = "John works at a software company. He enjoys programming and spends most of his day coding. His colleagues admire his skills."
+
+sentences = sent_tokenize(text)
+tokens = [word_tokenize(sentence) for sentence in sentences]
+
+pos_tags = [pos_tag(sentence) for sentence in tokens]
+)
+ner_tags = [ne_chunk(pos_tag) for pos_tag in pos_tags]
+
+for i, sentence in enumerate(sentences):
+    print(f"Sentence {i + 1}: {sentence}")
+    print(f"Tokens: {tokens[i]}")
+    print(f"POS Tags: {pos_tags[i]}")
+    print(f"NER Tags: {ner_tags[i]}")
+    print("\n")
+
