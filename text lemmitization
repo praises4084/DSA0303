@@ -1,0 +1,9 @@
+import nltk
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+text = "Running lions  are jumping over the fences"
+words = text.split()
+lemmatized_words = [lemmatizer.lemmatize(word) for word in words]
+lemmatized_text = ' '.join(lemmatized_words)
+print("Original text:", text)
+print("Text after lemmatization:", lemmatized_text)
