@@ -1,0 +1,24 @@
+from textblob import TextBlob
+
+def sentiment_analysis(text):
+    analysis = TextBlob(text)
+
+    polarity = analysis.sentiment.polarity
+
+   
+    if polarity > 0:
+        sentiment = "positive"
+    elif polarity < 0:
+        sentiment = "negative"
+    else:
+        sentiment = "neutral"
+
+    return sentiment
+
+text = input("Enter a sentence or document for sentiment analysis: ")
+
+
+result = sentiment_analysis(text)
+
+
+print(f"Sentiment: {result}")
