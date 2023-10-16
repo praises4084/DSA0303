@@ -1,0 +1,19 @@
+import random
+text = "This is a sample text for building a bigram model. The bigram model is used for text generation."
+words = text.split()
+bigrams = [(words[i], words[i + 1]) for i in range(len(words) - 1)]
+def generate_text(seed_word, length=10):
+    generated_text = [seed_word]
+    current_word = seed_word
+    for _ in range(length - 1):
+        possible_next_words = [word2 for word1, word2 in bigrams if word1 == current_word]
+        if possible_next_words:
+            next_word = random.choice(possible_next_words)
+            generated_text.append(next_word)
+            current_word = next_word
+        else:
+            break
+    return " ".join(generated_text)
+seed_word = "This"
+generated_text = generate_text(seed_word, length=15)
+print(generated_text)
