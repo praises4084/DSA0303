@@ -1,0 +1,15 @@
+import nltk
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
+nltk.download('wordnet')
+lemmatizer = WordNetLemmatizer()
+words = ["running", "flies", "better", "happiness", "wolves"]
+for word in words:
+    base_form = lemmatizer.lemmatize(word, pos=wordnet.VERB)
+    print(f"Original Word: {word}, Base Form: {base_form}")
+word_to_synonymize = "happy"
+synonyms = []
+for syn in wordnet.synsets(word_to_synonymize):
+    for lemma in syn.lemmas():
+        synonyms.append(lemma.name())
+print(f"Synonyms for '{word_to_synonymize}': {set(synonyms)}")
