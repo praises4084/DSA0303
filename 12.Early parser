@@ -1,0 +1,50 @@
+class EarleyParser:
+    def __init__(self, grammar):
+        self.grammar = grammar
+    def predict(self, state, chart):
+        next_symbol = state["rhs"][state["dot"]]
+        for rule in self.grammar:
+            if rule["lhs"] == next_symbol:
+                new_state = {"lhs": rule["lhs"], "rhs": rule["rhs"], "dot": 0, "start": state["start"]}
+                chart[state["dot"]].append(new_state)
+    def scan(self, state, token, chart):
+        if state["dot"] < len(state["rhs"]) and state["rhs"][state["dot"]] == token:
+            new_state = {"lhs": state["lhs"], "rhs": state["rhs"], "dot": state["dot"] + 1, "start": state["start"]}
+            chart[state["dot"] + 1].append(new_state)
+    def complete(self, state, chart):
+        for st in chart[state["start"]]:
+            if st["dot"] < len(st["rhs"]) and st["rhs"][st["dot"]] == state["lhs"]:
+                new_state = {"lhs": st["lhs"], "rhs": st["rhs"], "dot": st["dot"] + 1, "start": st["start"]}
+                chart[state["dot"]].append(new_state)
+    def parse(self, tokens):
+        chart = [[] for _ in range(len(tokens) + 1)]
+        start_state = {"lhs": self.grammar[0]["lhs"], "rhs": self.grammar[0]["rhs"], "dot": 0, "start": 0}
+        chart[0].append(start_state)
+        for i in range(len(tokens) + 1):
+            for state in chart[i]:
+                if state["dot"] < len(state["rhs"]):
+                    self.predict(state, chart)
+                else:
+                    self.complete(state, chart)
+                if i < len(tokens):
+                    self.scan(state, tokens[i], chart)
+        for state in chart[len(tokens)]:
+            if state["lhs"] == start_state["lhs"] and state["start"] == 0 and state["dot"] == len(state["rhs"]):
+                return True
+        return False
+if __name__ == "__main__":
+    grammar = [
+        {"lhs": "S", "rhs": ["NP", "VP"]},
+        {"lhs": "NP", "rhs": ["Det", "N"]},
+        {"lhs": "VP", "rhs": ["V", "NP"]},
+        {"lhs": "Det", "rhs": ["the"]},
+        {"lhs": "N", "rhs": ["cat"]},
+        {"lhs": "V", "rhs": ["chased"]}
+    ]
+
+    parser = EarleyParser(grammar)
+    sentence = input("Enter a sentence: ").split()
+    if parser.parse(sentence):
+        print("Parsing successful!")
+    else:
+        print("Parsing failed.")
