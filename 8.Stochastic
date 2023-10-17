@@ -1,0 +1,22 @@
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk import FreqDist
+training_data = [
+    ("I love programming in Python", [("I", "PRP"), ("love", "VBP"), ("programming", "VBG"), ("in", "IN"), ("Python", "NN")]),
+    ("NLTK is a powerful library for natural language processing", [("NLTK", "NNP"), ("is", "VBZ"), ("a", "DT"), ("powerful", "JJ"), ("library", "NN"), ("for", "IN"), ("natural", "JJ"), ("language", "NN"), ("processing", "NN")])
+]
+word_pos_freq = FreqDist(word_pos for sentence, tags in training_data for word, word_pos in zip(word_tokenize(sentence), tags))
+def pos_tag(sentence):
+    words = word_tokenize(sentence)
+    pos_tags = []
+    for word in words:
+        if word in word_pos_freq:
+            pos_tag = word_pos_freq[word].max()
+        else:
+            pos_tag = "NN"
+        pos_tags.append((word, pos_tag))
+    return pos_tags
+user_input = input("Enter a sentence: ")
+predicted_pos_tags = pos_tag(user_input)
+print("Predicted Part-of-Speech tags:")
+print(predicted_pos_tags)
