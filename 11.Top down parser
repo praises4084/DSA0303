@@ -1,0 +1,47 @@
+class SimpleParser:
+    def __init__(self, input_string):
+        self.tokens = input_string.replace(" ", "")  # Remove spaces from input string
+        self.current_index = 0
+
+    def parse(self):
+        try:
+            self.expr()
+            if self.current_index == len(self.tokens):
+                print("Parsing successful!")
+            else:
+                self.error("Unexpected tokens at the end of the input.")
+        except SyntaxError as e:
+            self.error(str(e))
+    def expr(self):
+        self.term()
+        while self.current_index < len(self.tokens):
+            if self.tokens[self.current_index] in "+-":
+                self.current_index += 1
+                self.term()
+            else:
+                break
+    def term(self):
+        self.factor()
+        while self.current_index < len(self.tokens):
+            if self.tokens[self.current_index] in "*/":
+                self.current_index += 1
+                self.factor()
+            else:
+                break
+    def factor(self):
+        if self.tokens[self.current_index].isdigit():
+            self.current_index += 1
+        elif self.tokens[self.current_index] == "(":
+            self.current_index += 1
+            self.expr()
+            if self.tokens[self.current_index] == ")":
+                self.current_index += 1
+            else:
+                self.error("Expected closing parenthesis.")
+        else:
+            self.error("Invalid token.")
+    def error(self, message):
+        raise SyntaxError(message)# Example usage
+input_string = input("Enter an arithmetic expression: ")
+parser = SimpleParser(input_string)
+parser.parse()
