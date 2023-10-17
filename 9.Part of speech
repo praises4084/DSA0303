@@ -1,0 +1,25 @@
+import re
+patterns = [
+    (r'\b(?:I|me|my)\b', 'PRP'),  # Personal pronouns
+    (r'\b(?:love|like|hate)\b', 'VB'),  # Verbs
+    (r'\b(?:programming|Python)\b', 'NN'),  # Nouns
+    (r'\b(?:in)\b', 'IN'),  # Prepositions
+    (r'\b(?:is|am|are)\b', 'VBZ'),  # Verbs (Present tense)
+    (r'\b(?:a)\b', 'DT'),  # Determiners
+    (r'\b(?:powerful)\b', 'JJ'),  # Adjectives
+    (r'\b(?:for)\b', 'IN')  # Prepositions
+]
+def pos_tag(sentence):
+    tagged_words = []
+    for word in sentence.split():
+        for pattern, tag in patterns:
+            if re.match(pattern, word, re.IGNORECASE):
+                tagged_words.append((word, tag))
+                break
+        else:
+            tagged_words.append((word, 'NN'))
+    return tagged_words
+user_input = input("Enter a sentence: ")
+predicted_pos_tags = pos_tag(user_input)
+print("Predicted Part-of-Speech tags:")
+print(predicted_pos_tags)
