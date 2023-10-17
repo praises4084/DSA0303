@@ -1,0 +1,20 @@
+import re
+rules = [
+    (r'ing$', 'VB'),  # Rule 1: Words ending with "ing" are verbs
+    (r'ly$', 'RB'),   # Rule 2: Words ending with "ly" are adverbs
+    (r'ed$', 'VB'),   # Rule 3: Words ending with "ed" are verbs
+]
+def brill_tagging(text, rules):
+    tagged_words = []
+    words = text.split()
+    for word in words:
+        for pattern, tag in rules:
+            if re.search(pattern, word):
+                tagged_words.append((word, tag))
+                break
+        else:
+            tagged_words.append((word, 'NN'))
+    return tagged_words
+input_text = input("Enter a sentence: ")
+tagged_words = brill_tagging(input_text, rules)
+print(tagged_words)
