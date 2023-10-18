@@ -1,0 +1,53 @@
+def lexer(expression):
+    return expression.replace('(', ' ( ').replace(')', ' ) ').split()
+
+def parse(tokens):
+    def _parse_expr(tokens):
+        if not tokens:
+            raise SyntaxError("Unexpected end of expression")
+
+        token = tokens.pop(0)
+
+        if token == '(':
+            inner_tokens = []
+            while tokens[0] != ')':
+                inner_tokens.append(_parse_expr(tokens))
+            tokens.pop(0) 
+            return inner_tokens
+
+        elif token == 'NOT':
+            return ['NOT', _parse_expr(tokens)]
+
+        else:
+            return token
+
+    tokens = list(reversed(tokens))
+    return _parse_expr(tokens)
+
+def evaluate(expr, variables):
+    if isinstance(expr, list):
+        operator = expr[0]
+        if operator == 'AND':
+            return all(evaluate(sub_expr, variables) for sub_expr in expr[1:])
+        elif operator == 'OR':
+            return any(evaluate(sub_expr, variables) for sub_expr in expr[1:])
+        elif operator == 'NOT':
+            return not evaluate(expr[1], variables)
+    else:
+        return variables.get(expr, False)
+
+if _name_ == "_main_":
+    expression = "((P AND Q) OR (NOT R))"
+
+    variables = {
+        'P': True,
+        'Q': False,
+        'R': True,
+    }
+
+    tokens = lexer(expression)
+    parsed_expr = parse(tokens)
+    result = evaluate(parsed_expr, variables)
+
+    print(f"Expression: {expression}")
+    print(f"Result: {result}")
