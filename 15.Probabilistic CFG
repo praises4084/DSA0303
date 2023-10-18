@@ -1,0 +1,22 @@
+import nltk
+
+pcfg_grammar = nltk.PCFG.fromstring("""
+    S -> NP VP [1.0]
+    NP -> Det N [0.6] | N [0.4]
+    VP -> V NP [0.7] | VP PP [0.3]
+    PP -> P NP [1.0]
+    Det -> 'the' [1.0]
+    N -> 'cat' [0.4] | 'dog' [0.3] | 'park' [0.3]
+    V -> 'chased' [0.5] | 'saw' [0.5]
+    P -> 'in' [1.0]
+""")
+from nltk.parse import pchart
+from nltk.grammar import Nonterminal
+
+
+parser = pchart.InsideChartParser(pcfg_grammar)
+
+sentence = "the cat chased the dog in the park".split()
+
+for tree in parser.parse(sentence):
+    print(tree)
