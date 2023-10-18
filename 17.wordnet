@@ -1,0 +1,28 @@
+import nltk
+from nltk.corpus import wordnet
+
+nltk.download('wordnet')
+
+word = "example"
+
+synsets = wordnet.synsets(word)
+
+if not synsets:
+    print(f"No synsets found for '{word}'.")
+else:
+    for synset in synsets:
+        print(f"Synset: {synset.name()}")
+        print(f"Definition: {synset.definition()}")
+
+        lemma_names = synset.lemma_names()
+        print("Lemma Names:", lemma_names)
+
+        hypernyms = synset.hypernyms()
+        if hypernyms:
+            print("Hypernyms:", [h.name() for h in hypernyms])
+
+        hyponyms = synset.hyponyms()
+        if hyponyms:
+            print("Hyponyms:", [h.name() for h in hyponyms])
+
+        print()
