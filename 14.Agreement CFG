@@ -1,0 +1,28 @@
+import nltk
+from nltk import CFG, ChartParser
+
+grammar = CFG.fromstring("""
+    S -> NP_SG VP_SG | NP_PL VP_PL
+    NP_SG -> 'the' 'cat'
+    NP_PL -> 'the' 'cats'
+    VP_SG -> 'chases' | 'is' 'happy'
+    VP_PL -> 'chase' | 'are' 'happy'
+""")
+
+parser = ChartParser(grammar)
+
+def check_agreement(sentence):
+    tokens = sentence.split()
+    chart = list(parser.parse(tokens))
+
+    if chart:
+        print(f"Sentence: {sentence}")
+        print("Agreement: Agreement is correct.")
+    else:
+        print(f"Sentence: {sentence}")
+        print("Agreement: Agreement is incorrect.")
+
+check_agreement("the cat chases")
+check_agreement("the cats chase")
+check_agreement("the cat are happy")
+check_agreement("the cats is happy")
