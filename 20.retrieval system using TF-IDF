@@ -1,0 +1,26 @@
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
+
+documents = [
+    "Machine learning is a subset of artificial intelligence.",
+    "Artificial intelligence is the intelligence demonstrated by machines.",
+    "Natural language processing is a field of study in AI.",
+    "Deep learning is a subfield of machine learning."
+]
+
+query = "What is artificial intelligence?"
+
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(documents)
+
+query_vector = tfidf_vectorizer.transform([query])
+
+cosine_similarities = linear_kernel(query_vector, tfidf_matrix)
+
+document_scores = list(enumerate(cosine_similarities[0]))
+document_scores.sort(key=lambda x: x[1], reverse=True)
+
+print("Query:", query)
+print("\nRanked Documents:")
+for index, score in document_scores:
+    print(f"Document {index + 1}: {documents[index]} (Score: {score:.4f})")
