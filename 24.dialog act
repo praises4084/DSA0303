@@ -1,0 +1,37 @@
+import re
+
+def recognize_dialog_act(utterance):
+    question_patterns = [r'.*\b(?:who|what|where|when|why|how)\b.*\?$', r'.*\b(is|are|am)\b.*\?$', r'.*\bdo|does\b.*\?$', r'.*\bcan\b.*\?$']
+    statement_patterns = [r'^[^?]*$', r'.*[.!?]$']
+    greeting_patterns = [r'^(hi|hello|hey)\b.*$', r'^(good morning|good afternoon|good evening)\b.*$']
+    farewell_patterns = [r'^(bye|goodbye|see you)\b.*$']
+
+    for pattern in question_patterns:
+        if re.match(pattern, utterance, re.IGNORECASE):
+            return "Question"
+
+    for pattern in statement_patterns:
+        if re.match(pattern, utterance, re.IGNORECASE):
+            return "Statement"
+
+    for pattern in greeting_patterns:
+        if re.match(pattern, utterance, re.IGNORECASE):
+            return "Greeting"
+
+    for pattern in farewell_patterns:
+        if re.match(pattern, utterance, re.IGNORECASE):
+            return "Farewell"
+
+    return "Other"
+
+if __name__ == '__main__':
+    conversation = [
+        "Hello, how can I help you?",
+        "What time does the store close?",
+        "I'm looking for a book on Python programming.",
+        "Goodbye!"
+    ]
+
+    for utterance in conversation:
+        dialog_act = recognize_dialog_act(utterance)
+        print(f'Utterance: "{utterance}" --> Dialog Act: {dialog_act}')
